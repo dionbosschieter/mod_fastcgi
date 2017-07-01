@@ -1,5 +1,5 @@
 README for mod_fastcgi
-~~~~~~~~~~~~~~~~~~~~~~
+======================
 mod_fastcgi is a module for the Apache web server, that enables
 FastCGI - a standards based protocol for communicating with
 applications that generate dynamic content for web pages.
