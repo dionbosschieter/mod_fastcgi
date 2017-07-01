@@ -14,8 +14,4 @@ RUN bash -e /root/build_apache24.sh
 COPY ./build_mod_fastcgi.sh /root
 RUN bash -e /root/build_mod_fastcgi.sh
 
-# Expose port #27017 from the container to the host
 EXPOSE 80
-
-# Set /usr/bin/mongod as the dockerized entry-point application
-# ENTRYPOINT ["/opt/apache2/bin/httpd"]
