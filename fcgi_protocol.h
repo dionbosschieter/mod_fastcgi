@@ -22,7 +22,12 @@ typedef struct {
 } FCGI_Header;
 
 #define FCGI_MAX_LENGTH 0xffff
-
+/*
+ * Limit the number of bytes that can be in a http header.
+ * Because we store the whole header before processing it,
+ * so it is sane to limit this.
+ */
+#define FCGI_SERVER_MAX_HEADER_BUFFER_LEN 16000
 /*
  * Number of bytes in a FCGI_Header.  Future versions of the protocol
  * will not reduce this number.

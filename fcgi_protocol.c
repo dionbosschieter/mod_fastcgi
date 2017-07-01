@@ -380,7 +380,18 @@ int fcgi_protocol_dequeue(pool *p, fcgi_request *fr)
                 if (len > 0) {
                     switch(fr->parseHeader) {
                         case SCAN_CGI_READING_HEADERS:
+                            /* Copy part of the server input buffer to fr->header */
                             fcgi_buf_get_to_array(fr->serverInputBuffer, fr->header, len);
+
+                            /* Full buffer, dump it and complain */
+                            if (fr->header->nelts >= FCGI_SERVER_MAX_HEADER_BUFFER_LEN)
+                            {
+                                ap_log_rerror(FCGI_LOG_WARN_NOERRNO, fr->r,
+                                    "FastCGI: too much stdout received from server \"%s\", "
+                                    "increase FCGI_SERVER_MAX_HEADER_BUFFER_LEN (%d) and rebuild ",
+                                    fr->fs_path, FCGI_SERVER_MAX_HEADER_BUFFER_LEN);
+                                return HTTP_INTERNAL_SERVER_ERROR;
+                            }
                             break;
                         case SCAN_CGI_FINISHED:
                             len = min(BufferFree(fr->clientOutputBuffer), len);
